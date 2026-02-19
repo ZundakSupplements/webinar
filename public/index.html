@@ -198,6 +198,17 @@ body {
 }
 .f-err.vis { display: block; }
 
+.f-ok {
+  background: rgba(40,200,120,.10);
+  border: 1px solid rgba(40,200,120,.28);
+  border-radius: 4px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: rgba(200,255,230,.92);
+  display: none;
+}
+.f-ok.vis { display: block; }
+
 .f-note {
   font-size: 11px;
   color: var(--dim);
@@ -331,6 +342,38 @@ body {
   font-weight: 600;
   color: var(--w);
 }
+
+
+/* ══════════════════════
+   IMAGE SLOTS (URLs via JS)
+══════════════════════ */
+#heroAfterImg,
+#heroBeforeImg,
+#slBefore,
+#slAfter,
+#hover1Before, #hover1After,
+#hover2Before, #hover2After,
+#hover3Before, #hover3After,
+#exAds1, #exAds2, #exAds3,
+#exSocial1, #exSocial2, #exSocial3,
+#exCat1, #exCat2, #exCat3 {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.ex-card.has-img {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.ex-card.has-img::after{
+  content:'';
+  position:absolute; inset:0;
+  background: linear-gradient(180deg, rgba(10,10,9,.25) 0%, rgba(10,10,9,.75) 100%);
+  pointer-events:none;
+}
+.ex-card.has-img > * { position: relative; z-index: 1; }
 
 /* ══════════════════════
    SECTIONS BELOW HERO
@@ -941,28 +984,31 @@ footer {
     </p>
 
     <!-- INLINE FORM -->
-    <div class="form-box">
+    <form class="form-box" id="subscribeForm" novalidate>
       <div class="form-spots">
         <div class="spot-dot"></div>
         Inscrições abertas — vagas limitadas
       </div>
 
-      <div class="f-err" id="formErr"></div>
+      <div class="f-err" id="formErr" role="alert" aria-live="polite"></div>
+      <div class="f-ok" id="formOk" role="status" aria-live="polite"></div>
 
       <div class="f-field">
         <label class="f-lbl" for="iName">Nome</label>
-        <input class="f-inp" type="text" id="iName" placeholder="Como te chamamos?" autocomplete="given-name">
+        <input class="f-inp" type="text" id="iName" name="name" placeholder="Como te chamamos?" autocomplete="given-name" required>
       </div>
       <div class="f-field">
         <label class="f-lbl" for="iEmail">Email</label>
-        <input class="f-inp" type="email" id="iEmail" placeholder="email@exemplo.com" autocomplete="email">
+        <input class="f-inp" type="email" id="iEmail" name="email" placeholder="email@exemplo.com" autocomplete="email" required>
       </div>
-      <button class="f-submit" id="subBtn" onclick="handleSubmit()">
+
+      <button class="f-submit" id="subBtn" type="submit">
         <span class="bt">Inscrever-me já!</span>
-        <div class="spinner"></div>
+        <div class="spinner" aria-hidden="true"></div>
       </button>
+
       <p class="f-note">Grátis. Sem cartão. Ao inscreveres-te aceitas receber informações sobre o webinar.</p>
-    </div>
+    </form>
 
     <!-- bullets -->
     <div class="bullets">
@@ -990,16 +1036,17 @@ footer {
   <!-- RIGHT — full-bleed "depois" photo with "antes" float -->
   <div class="hero-right">
 
-    <!-- placeholder gradient for the "depois" image -->
-    <div class="photo-after"></div>
-    <div class="photo-placeholder">
-      <div class="photo-placeholder-icon">👗</div>
-      <div class="photo-placeholder-label">Substitui pela tua foto "Depois"</div>
+    <!-- FOTO "DEPOIS" (URL configurável) -->
+    <div class="photo-after-img" id="heroAfterImg">
+      <div class="photo-placeholder" id="heroAfterPh">
+        <div class="photo-placeholder-icon">👗</div>
+        <div class="photo-placeholder-label">Coloca a URL da tua foto "Depois"</div>
+      </div>
     </div>
 
-    <!-- "antes" floating card -->
+    <!-- "antes" floating card (URL configurável) -->
     <div class="antes-card">
-      <div class="antes-card-img">📦</div>
+      <div class="antes-card-img" id="heroBeforeImg">📦</div>
       <div class="antes-card-label">Antes</div>
     </div>
 
@@ -1026,7 +1073,7 @@ footer {
     </div>
 
     <div class="slider reveal" id="baSlider">
-      <div class="sl-side sl-before-bg">
+      <div class="sl-side sl-before-bg" id="slBefore">
         <span class="sl-label sl-label-b">Antes — foto simples</span>
         <div class="sl-emoji">📦</div>
         <div class="sl-caption sl-caption-b">Foto com<br>telemóvel</div>
@@ -1046,13 +1093,13 @@ footer {
     <!-- hover before/after cards -->
     <div class="ba-cards">
       <div class="ba-card reveal">
-        <div class="bc-face bc-b">
+        <div class="bc-face bc-b" id="hover1Before">
           <div class="bc-ico">👗</div>
           <span class="bc-pill bc-pill-b">Antes</span>
           <div class="bc-text bc-text-b">Roupa<br>em cabide</div>
           <div class="bc-tip">Passa o rato para ver</div>
         </div>
-        <div class="bc-face bc-a">
+        <div class="bc-face bc-a" id="hover1After">
           <div class="bc-ico-a">✨</div>
           <span class="bc-pill bc-pill-a">Depois — IA</span>
           <div class="bc-text bc-text-a">Anúncio<br>editorial</div>
@@ -1060,13 +1107,13 @@ footer {
         <span class="bc-ph">Placeholder</span>
       </div>
       <div class="ba-card reveal" style="transition-delay:.1s">
-        <div class="bc-face bc-b">
+        <div class="bc-face bc-b" id="hover2Before">
           <div class="bc-ico">👠</div>
           <span class="bc-pill bc-pill-b">Antes</span>
           <div class="bc-text bc-text-b">Calçado<br>fundo branco</div>
           <div class="bc-tip">Passa o rato para ver</div>
         </div>
-        <div class="bc-face bc-a">
+        <div class="bc-face bc-a" id="hover2After">
           <div class="bc-ico-a">✨</div>
           <span class="bc-pill bc-pill-a">Depois — IA</span>
           <div class="bc-text bc-text-a">Imagem<br>de marca</div>
@@ -1074,13 +1121,13 @@ footer {
         <span class="bc-ph">Placeholder</span>
       </div>
       <div class="ba-card reveal" style="transition-delay:.2s">
-        <div class="bc-face bc-b">
+        <div class="bc-face bc-b" id="hover3Before">
           <div class="bc-ico">💍</div>
           <span class="bc-pill bc-pill-b">Antes</span>
           <div class="bc-text bc-text-b">Bijuteria<br>em mesa</div>
           <div class="bc-tip">Passa o rato para ver</div>
         </div>
-        <div class="bc-face bc-a">
+        <div class="bc-face bc-a" id="hover3After">
           <div class="bc-ico-a">✨</div>
           <span class="bc-pill bc-pill-a">Depois — IA</span>
           <div class="bc-text bc-text-a">Visual<br>premium</div>
@@ -1109,7 +1156,7 @@ footer {
 
     <div class="ex-panel active" id="panel-ads">
       <div class="ex-grid">
-        <div class="ex-card reveal">
+        <div class="ex-card reveal" id="exCat3" id="exCat2" id="exCat1" id="exSocial3" id="exSocial2" id="exSocial1" id="exAds3" id="exAds2" id="exAds1">
           <div class="ex-num">01</div><div class="ex-badge">Meta Ads</div>
           <div class="ex-icon">📣</div>
           <div class="ex-title">Anúncio<br>de produto</div>
@@ -1347,34 +1394,149 @@ function switchTab(id) {
   document.querySelectorAll('.ex-panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + id));
 }
 
-/* FORM */
-async function handleSubmit() {
-  const n   = document.getElementById('iName');
-  const em  = document.getElementById('iEmail');
-  const btn = document.getElementById('subBtn');
-  setErr('');
-  if (!n.value.trim())  { setErr('Por favor, indica o teu nome.'); n.focus(); return; }
-  if (!em.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em.value)) { setErr('Por favor, indica um e-mail válido.'); em.focus(); return; }
-  btn.classList.add('loading'); btn.disabled = true;
-  try {
-    const res  = await fetch('/api/subscribe', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: n.value.trim(), email: em.value.trim() })
-    });
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(data.error || 'Erro ao registar.');
-    window.location.href = '/sucesso.html';
-  } catch (err) {
-    setErr(err.message || 'Ocorreu um erro. Tenta novamente.');
-    btn.classList.remove('loading'); btn.disabled = false;
+/* FORM + ASSETS CONFIG */
+
+// 1) Coloca aqui as tuas URLs (podes usar links directos .jpg/.png/.webp)
+const CONFIG = {
+  subscribeEndpoint: '/api/subscribe',     // se estiveres em Vercel: fica assim
+  successRedirect:   '/sucesso.html',      // mete '' para não fazer redirect
+  assets: {
+    heroAfter:    '', // foto grande "Depois" (lado direito)
+    heroBefore:   '', // mini card "Antes" (lado direito)
+    sliderBefore: '', // antes/depois (imagem "Antes")
+    sliderAfter:  '', // antes/depois (imagem "Depois")
+
+    hover: [
+      { before: '', after: '' }, // card 1 (Antes/Depois)
+      { before: '', after: '' }, // card 2
+      { before: '', after: '' }  // card 3
+    ],
+
+    examples: {
+      ads:    ['', '', ''], // 3 cards em "Anúncios"
+      social: ['', '', ''], // 3 cards em "Redes Sociais"
+      cat:    ['', '', '']  // 3 cards em "Catálogos"
+    }
   }
+};
+
+function setBgById(id, url, opts = {}) {
+  const el = document.getElementById(id);
+  if (!el || !url) return;
+  const safe = String(url).trim();
+  if (!safe) return;
+
+  const overlay = opts.overlay ? String(opts.overlay) + ', ' : '';
+  el.style.backgroundImage = `${overlay}url("${safe}")`;
+
+  if (opts.addClass) el.classList.add(opts.addClass);
 }
+
+function applyAssets() {
+  // hero
+  setBgById('heroAfterImg', CONFIG.assets.heroAfter, {
+    overlay: 'linear-gradient(135deg, rgba(10,10,9,.55) 0%, rgba(10,10,9,.15) 60%)'
+  });
+  if (CONFIG.assets.heroAfter) {
+    const ph = document.getElementById('heroAfterPh');
+    if (ph) ph.style.display = 'none';
+  }
+  setBgById('heroBeforeImg', CONFIG.assets.heroBefore);
+
+  // slider antes/depois
+  setBgById('slBefore', CONFIG.assets.sliderBefore);
+  setBgById('slAfter',  CONFIG.assets.sliderAfter);
+
+  // hover cards
+  CONFIG.assets.hover.forEach((c, idx) => {
+    setBgById(`hover${idx+1}Before`, c.before, { overlay: 'linear-gradient(180deg, rgba(10,10,9,.15), rgba(10,10,9,.65))' });
+    setBgById(`hover${idx+1}After`,  c.after,  { overlay: 'linear-gradient(180deg, rgba(10,10,9,.15), rgba(10,10,9,.65))' });
+  });
+
+  // example cards
+  const map = [
+    ['ads',    ['exAds1','exAds2','exAds3']],
+    ['social', ['exSocial1','exSocial2','exSocial3']],
+    ['cat',    ['exCat1','exCat2','exCat3']]
+  ];
+  map.forEach(([k, ids]) => {
+    (CONFIG.assets.examples[k] || []).forEach((url, i) => {
+      setBgById(ids[i], url, { addClass: 'has-img' });
+    });
+  });
+}
+applyAssets();
+
+/* FORM */
+const form = document.getElementById('subscribeForm');
+const n    = document.getElementById('iName');
+const em   = document.getElementById('iEmail');
+const btn  = document.getElementById('subBtn');
+
 function setErr(msg) {
   const el = document.getElementById('formErr');
-  el.textContent = msg; el.classList.toggle('vis', !!msg);
+  if (!el) return;
+  el.textContent = msg || '';
+  el.classList.toggle('vis', !!msg);
 }
-document.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && ['iName', 'iEmail'].includes(e.target.id)) handleSubmit();
+function setOk(msg) {
+  const el = document.getElementById('formOk');
+  if (!el) return;
+  el.textContent = msg || '';
+  el.classList.toggle('vis', !!msg);
+}
+
+function isValidEmail(v) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+}
+
+function setLoading(on) {
+  btn.classList.toggle('loading', !!on);
+  btn.disabled = !!on;
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  setErr('');
+  setOk('');
+
+  const name  = (n.value || '').trim();
+  const email = (em.value || '').trim();
+
+  if (!name)  { setErr('Por favor, indica o teu nome.'); n.focus(); return; }
+  if (!email || !isValidEmail(email)) { setErr('Por favor, indica um e-mail válido.'); em.focus(); return; }
+
+  setLoading(true);
+
+  try {
+    const res = await fetch(CONFIG.subscribeEndpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email })
+    });
+
+    const data = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+      throw new Error(data?.error || 'Erro ao registar.');
+    }
+
+    // sucesso
+    if (CONFIG.successRedirect) {
+      window.location.href = CONFIG.successRedirect;
+      return;
+    }
+
+    setOk('Inscrição confirmada ✅ Vemo-nos no webinar.');
+    n.disabled = true;
+    em.disabled = true;
+    btn.disabled = true;
+    btn.classList.remove('loading');
+
+  } catch (err) {
+    setErr(err?.message || 'Ocorreu um erro. Tenta novamente.');
+    setLoading(false);
+  }
 });
 </script>
 </body>
