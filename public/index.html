@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Webinar IA para Moda — 3 de Março, 21h</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════
+   RESET + TOKENS
+══════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --bg:   #0A0A09;
+  --bg1:  #111110;
+  --y:    #F0E840;
+  --y2:   #D9D22A;
+  --w:    #F0EDE6;
+  --dim:  #666560;
+  --dim2: #3A3935;
+  --ink:  #0A0A09;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--w);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ══════════════════════
+   HERO — full viewport
+══════════════════════ */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+}
+
+/* ── LEFT PANEL ── */
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 72px 64px 72px 72px;
+  position: relative;
+  z-index: 2;
+}
+
+.event-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--y);
+  margin-bottom: 28px;
+}
+.live-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--y);
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+/* headline */
+.hero-h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(52px, 5.5vw, 82px);
+  line-height: .92;
+  letter-spacing: .02em;
+  color: var(--w);
+  margin-bottom: 20px;
+}
+.hero-h1 .y { color: var(--y); }
+.hero-h1 .stroke {
+  -webkit-text-stroke: 1.5px var(--w);
+  color: transparent;
+}
+
+.hero-sub {
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--dim);
+  line-height: 1.75;
+  max-width: 440px;
+  margin-bottom: 40px;
+}
+.hero-sub strong { font-weight: 500; color: var(--w); }
+
+/* ── FORM ── */
+.form-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 420px;
+}
+
+.form-spots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--y);
+  margin-bottom: 4px;
+}
+.spot-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--y);
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+.f-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.f-lbl {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.f-inp {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 4px;
+  color: var(--w);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  padding: 13px 16px;
+  outline: none;
+  transition: border-color .18s, background .18s;
+  width: 100%;
+}
+.f-inp::placeholder { color: rgba(255,255,255,.25); }
+.f-inp:focus {
+  border-color: var(--y);
+  background: rgba(240,232,64,.04);
+}
+
+.f-submit {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 17px;
+  letter-spacing: .12em;
+  background: var(--y);
+  color: var(--ink);
+  border: none;
+  border-radius: 4px;
+  padding: 16px 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all .18s;
+  margin-top: 4px;
+}
+.f-submit:hover:not(:disabled) {
+  background: var(--y2);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(240,232,64,.25);
+}
+.f-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+.spinner {
+  width: 16px; height: 16px;
+  border: 2px solid rgba(10,10,9,.2);
+  border-top-color: var(--ink);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  display: none;
+}
+.f-submit.loading .spinner { display: block; }
+.f-submit.loading .bt { display: none; }
+
+.f-err {
+  background: rgba(255,60,0,.08);
+  border: 1px solid rgba(255,60,0,.25);
+  border-radius: 4px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #FF7A5A;
+  display: none;
+}
+.f-err.vis { display: block; }
+
+.f-note {
+  font-size: 11px;
+  color: var(--dim);
+  line-height: 1.55;
+  margin-top: 2px;
+}
+
+/* bullets below form */
+.bullets {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 28px;
+}
+.bullet {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--dim);
+  line-height: 1.5;
+}
+.bullet-icon {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: rgba(240,232,64,.12);
+  border: 1px solid rgba(240,232,64,.3);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.bullet-icon svg { width: 10px; height: 10px; }
+
+/* ── RIGHT PANEL — photo ── */
+.hero-right {
+  position: relative;
+  overflow: hidden;
+}
+
+/* the big "depois" photo — full bleed */
+.photo-after {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to right, var(--bg) 0%, transparent 18%),
+    linear-gradient(to top, var(--bg) 0%, transparent 20%);
+  z-index: 2;
+}
+.photo-after-img {
+  position: absolute;
+  inset: 0;
+  background:
+    /* dark overlay for mood */
+    linear-gradient(135deg, rgba(10,10,9,.5) 0%, rgba(10,10,9,.1) 60%),
+    /* placeholder gradient simulating fashion photo */
+    linear-gradient(160deg, #1A1610 0%, #2E2415 30%, #1C1A10 60%, #0E0C08 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Placeholder fashion silhouette */
+.photo-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  z-index: 1;
+}
+.photo-placeholder-icon {
+  font-size: 96px;
+  opacity: .15;
+  filter: drop-shadow(0 0 40px rgba(240,232,64,.2));
+}
+.photo-placeholder-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px;
+  letter-spacing: .3em;
+  color: rgba(240,232,64,.25);
+}
+
+/* "antes" floating card — top-left of photo */
+.antes-card {
+  position: absolute;
+  top: 40px;
+  left: -20px;
+  z-index: 10;
+  width: 140px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 48px rgba(0,0,0,.6);
+  border: 1px solid rgba(255,255,255,.08);
+}
+.antes-card-img {
+  width: 100%;
+  aspect-ratio: 1;
+  background: linear-gradient(145deg, #2A2520, #1A1510);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  opacity: .6;
+}
+.antes-card-label {
+  background: rgba(0,0,0,.75);
+  backdrop-filter: blur(8px);
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--w);
+  letter-spacing: .04em;
+  text-align: center;
+}
+
+/* "depois" badge bottom-right */
+.depois-badge {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  z-index: 10;
+  background: rgba(0,0,0,.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--w);
+}
+
+/* ══════════════════════
+   SECTIONS BELOW HERO
+══════════════════════ */
+.sec {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 96px 72px;
+}
+.sec-sm {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 72px 72px;
+}
+
+.sec-tag {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--y);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.sec-tag::after { content: ''; flex: 1; height: 1px; background: var(--dim2); }
+
+.sec-h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(48px, 6vw, 88px);
+  line-height: .9;
+  letter-spacing: .02em;
+  color: var(--w);
+}
+.sec-h2 .y { color: var(--y); }
+.sec-h2 .stroke { -webkit-text-stroke: 1.5px var(--w); color: transparent; }
+
+/* ══════════════════════
+   ANTES/DEPOIS DRAG SLIDER
+══════════════════════ */
+.ba-wrap {
+  background: var(--bg1);
+  border-top: 1px solid var(--dim2);
+  border-bottom: 1px solid var(--dim2);
+  padding: 96px 0;
+}
+.ba-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 72px;
+}
+.ba-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: end;
+  margin-bottom: 52px;
+}
+.ba-desc {
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--dim);
+  line-height: 1.8;
+}
+.ba-desc strong { font-weight: 500; color: var(--w); }
+
+/* slider */
+.slider {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16/9;
+  border-radius: 8px;
+  cursor: ew-resize;
+  user-select: none;
+  border: 1px solid var(--dim2);
+}
+.sl-side {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+.sl-before-bg {
+  background: #1A1815;
+}
+.sl-after-bg {
+  clip-path: inset(0 50% 0 0);
+  background: linear-gradient(160deg, #1C1A0A, #141208);
+}
+.sl-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 100px;
+}
+.sl-label-b { background: rgba(255,255,255,.08); color: var(--dim); }
+.sl-label-a { background: var(--y); color: var(--ink); }
+.sl-emoji { font-size: 80px; opacity: .12; }
+.sl-emoji-a {
+  font-size: 80px; opacity: .5;
+  filter: drop-shadow(0 0 28px rgba(240,232,64,.3));
+}
+.sl-caption {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: .06em;
+  text-align: center;
+  line-height: 1.3;
+}
+.sl-caption-b { color: rgba(240,237,230,.2); }
+.sl-caption-a { color: rgba(240,232,64,.55); }
+
+.sl-line {
+  position: absolute; top: 0; bottom: 0; left: 50%;
+  width: 2px; background: var(--y);
+  box-shadow: 0 0 20px rgba(240,232,64,.55);
+  pointer-events: none; z-index: 10;
+}
+.sl-handle {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--y);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px; color: var(--ink);
+  letter-spacing: -2px;
+  box-shadow: 0 0 24px rgba(240,232,64,.4);
+  pointer-events: none; z-index: 11;
+}
+.sl-hint {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+/* hover cards */
+.ba-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  margin-top: 40px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--dim2);
+}
+.ba-card {
+  position: relative;
+  aspect-ratio: 3/4;
+  cursor: pointer;
+  overflow: hidden;
+}
+.bc-face {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 10px;
+  transition: opacity .38s ease;
+}
+.bc-b { background: #161512; }
+.bc-a { opacity: 0; background: #141200; }
+.ba-card:hover .bc-b { opacity: 0; }
+.ba-card:hover .bc-a { opacity: 1; }
+.bc-pill {
+  font-size: 9px; font-weight: 600;
+  letter-spacing: .2em; text-transform: uppercase;
+  padding: 4px 12px; border-radius: 100px;
+}
+.bc-pill-b { background: rgba(255,255,255,.07); color: var(--dim); }
+.bc-pill-a { background: var(--y); color: var(--ink); }
+.bc-ico { font-size: 56px; opacity: .1; }
+.bc-ico-a {
+  font-size: 56px; opacity: .5;
+  filter: drop-shadow(0 0 16px rgba(240,232,64,.35));
+}
+.bc-text {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px; letter-spacing: .06em;
+  text-align: center; line-height: 1.3;
+}
+.bc-text-b { color: rgba(240,237,230,.2); }
+.bc-text-a { color: rgba(240,232,64,.6); }
+.bc-tip {
+  position: absolute; bottom: 12px; left: 0; right: 0;
+  text-align: center;
+  font-size: 9px; font-weight: 500;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--dim); transition: opacity .3s;
+}
+.ba-card:hover .bc-tip { opacity: 0; }
+.bc-ph {
+  position: absolute; top: 10px; right: 10px;
+  font-size: 8px; font-weight: 600;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--y); background: rgba(240,232,64,.07);
+  border: 1px solid rgba(240,232,64,.2);
+  border-radius: 4px; padding: 3px 8px;
+}
+
+/* ══════════════════════
+   RESULTS / EXAMPLES
+══════════════════════ */
+.results-wrap { padding: 96px 0; }
+
+.tabs {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--dim2);
+  padding-bottom: 0;
+}
+.tab {
+  font-size: 12px; font-weight: 500;
+  letter-spacing: .16em; text-transform: uppercase;
+  padding: 10px 20px;
+  background: transparent; color: var(--dim);
+  border: none; cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: all .15s;
+}
+.tab.active { color: var(--y); border-bottom-color: var(--y); }
+.tab:hover:not(.active) { color: var(--w); }
+
+.ex-panel { display: none; }
+.ex-panel.active { display: block; }
+
+.ex-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.ex-card {
+  background: var(--bg1);
+  border: 1px solid var(--dim2);
+  border-radius: 8px;
+  aspect-ratio: 4/5;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 12px;
+  padding: 28px;
+  cursor: pointer;
+  transition: all .25s;
+  position: relative; overflow: hidden;
+}
+.ex-card:hover {
+  border-color: rgba(240,232,64,.25);
+  background: #0E0D00;
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px rgba(0,0,0,.4);
+}
+.ex-card:hover .ex-icon { opacity: .55; filter: drop-shadow(0 0 18px rgba(240,232,64,.4)); }
+
+.ex-num {
+  position: absolute; top: 16px; left: 16px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 52px; color: rgba(255,255,255,.04); line-height: 1;
+}
+.ex-badge {
+  position: absolute; top: 14px; right: 14px;
+  font-size: 9px; font-weight: 600;
+  letter-spacing: .14em; text-transform: uppercase;
+  background: rgba(240,232,64,.08); color: var(--y);
+  border: 1px solid rgba(240,232,64,.18);
+  border-radius: 4px; padding: 4px 10px;
+}
+.ex-icon { font-size: 44px; opacity: .3; transition: all .25s; }
+.ex-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px; letter-spacing: .04em;
+  color: var(--w); text-align: center; line-height: 1.0;
+}
+.ex-desc {
+  font-size: 13px; font-weight: 300;
+  color: var(--dim); text-align: center; line-height: 1.65;
+}
+.ex-cta {
+  font-size: 9px; font-weight: 600;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--y); border: 1px solid rgba(240,232,64,.25);
+  border-radius: 4px; padding: 5px 12px;
+}
+.ex-ph {
+  position: absolute; bottom: 14px;
+  font-size: 9px; font-weight: 500;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(255,255,255,.15);
+}
+
+/* ══════════════════════
+   METHOD — simple flow
+══════════════════════ */
+.method-wrap {
+  background: var(--bg1);
+  border-top: 1px solid var(--dim2);
+  border-bottom: 1px solid var(--dim2);
+}
+.method-inner {
+  max-width: 1280px; margin: 0 auto;
+  padding: 96px 72px;
+}
+
+.flow {
+  display: grid;
+  grid-template-columns: 200px 48px repeat(3,1fr);
+  align-items: center;
+  gap: 0;
+  margin-top: 52px;
+}
+.flow-src {
+  background: var(--y);
+  padding: 32px 28px;
+  border-radius: 8px;
+}
+.fsrc-lbl {
+  font-size: 9px; font-weight: 600;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: rgba(10,10,9,.45); margin-bottom: 8px;
+}
+.fsrc-ttl {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: .04em;
+  color: var(--ink); line-height: 1.0;
+}
+.fsrc-sub {
+  font-size: 12px; font-weight: 300;
+  color: rgba(10,10,9,.5); margin-top: 8px; line-height: 1.5;
+}
+.flow-arrow {
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; color: var(--y);
+}
+.flow-out {
+  background: var(--bg);
+  border: 1px solid var(--dim2);
+  border-left: none;
+  padding: 28px 22px;
+  align-self: stretch;
+  display: flex; flex-direction: column;
+}
+.flow-out:last-child { border-radius: 0 8px 8px 0; }
+.fo-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 44px; color: rgba(240,232,64,.06);
+  line-height: 1; margin-bottom: 10px;
+}
+.fo-ico { font-size: 18px; margin-bottom: 8px; }
+.fo-ttl {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 19px; letter-spacing: .03em;
+  color: var(--w); line-height: 1.0; margin-bottom: 6px;
+}
+.fo-dsc {
+  font-size: 12px; font-weight: 300;
+  color: var(--dim); line-height: 1.65; flex: 1;
+}
+.fo-badge {
+  display: inline-block; margin-top: 12px;
+  font-size: 9px; font-weight: 600;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: var(--y); border: 1px solid rgba(240,232,64,.22);
+  border-radius: 4px; padding: 3px 10px;
+  align-self: flex-start;
+}
+
+/* ══════════════════════
+   PAIN
+══════════════════════ */
+.pain-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
+  align-items: start;
+}
+.pain-lead {
+  font-size: 16px; font-weight: 300;
+  color: var(--dim); line-height: 1.8; margin-top: 18px;
+}
+.pain-lead strong { font-weight: 500; color: var(--w); }
+.pain-list { display: flex; flex-direction: column; }
+.pain-item {
+  padding: 22px 0; border-bottom: 1px solid var(--dim2);
+  display: flex; gap: 18px; align-items: flex-start;
+}
+.pi-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 40px; color: var(--dim2); line-height: 1;
+  flex-shrink: 0; width: 46px;
+}
+.pi-txt {
+  font-size: 15px; font-weight: 300;
+  color: var(--dim); line-height: 1.7; padding-top: 7px;
+}
+.pi-txt strong { font-weight: 500; color: var(--w); }
+
+/* ══════════════════════
+   WHAT YOU'LL SEE
+══════════════════════ */
+.see-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 16px;
+  margin-top: 48px;
+}
+.see-card {
+  background: var(--bg1);
+  border: 1px solid var(--dim2);
+  border-radius: 8px;
+  padding: 36px 28px;
+  transition: all .25s;
+  position: relative; overflow: hidden;
+}
+.see-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px; background: var(--y);
+  transform: scaleX(0); transition: transform .3s ease;
+  transform-origin: left;
+}
+.see-card:hover { border-color: rgba(240,232,64,.2); }
+.see-card:hover::before { transform: scaleX(1); }
+.see-step {
+  font-size: 9px; font-weight: 600;
+  letter-spacing: .26em; text-transform: uppercase;
+  color: var(--y); margin-bottom: 14px;
+}
+.see-ttl {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: .03em;
+  color: var(--w); margin-bottom: 10px; line-height: 1.0;
+}
+.see-dsc {
+  font-size: 14px; font-weight: 300;
+  color: var(--dim); line-height: 1.7;
+}
+.see-pill {
+  display: inline-block; margin-top: 16px;
+  font-size: 9px; font-weight: 600;
+  letter-spacing: .16em; text-transform: uppercase;
+  background: rgba(240,232,64,.07); color: var(--y);
+  border: 1px solid rgba(240,232,64,.2);
+  border-radius: 4px; padding: 4px 10px;
+}
+
+/* ══════════════════════
+   WHO
+══════════════════════ */
+.who-inner {
+  background: var(--bg1);
+  border-top: 1px solid var(--dim2);
+  border-bottom: 1px solid var(--dim2);
+}
+.who-grid {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 1px;
+  background: var(--dim2);
+  margin-top: 48px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.who-card {
+  background: var(--bg1);
+  padding: 28px 24px;
+  transition: background .25s;
+}
+.who-card:hover { background: #0A0900; }
+.who-emoji { font-size: 24px; margin-bottom: 12px; display: block; }
+.who-ttl {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px; letter-spacing: .04em;
+  color: var(--w); margin-bottom: 8px; line-height: 1.0;
+}
+.who-dsc {
+  font-size: 13px; font-weight: 300;
+  color: var(--dim); line-height: 1.65;
+}
+
+/* ══════════════════════
+   FOOTER CTA STRIP
+══════════════════════ */
+.footer-cta {
+  text-align: center;
+  padding: 80px 40px;
+  border-top: 1px solid var(--dim2);
+}
+.footer-cta-h {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(40px, 5vw, 72px);
+  letter-spacing: .02em;
+  color: var(--w);
+  margin-bottom: 16px;
+}
+.footer-cta-h .y { color: var(--y); }
+.footer-cta-sub {
+  font-size: 15px; font-weight: 300;
+  color: var(--dim); max-width: 480px;
+  margin: 0 auto 32px;
+  line-height: 1.7;
+}
+.footer-cta-sub strong { font-weight: 500; color: var(--w); }
+.btn-cta-big {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px; letter-spacing: .1em;
+  background: var(--y); color: var(--ink);
+  padding: 18px 52px; border-radius: 6px;
+  text-decoration: none; display: inline-block;
+  transition: all .2s;
+}
+.btn-cta-big:hover {
+  background: var(--y2);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 36px rgba(240,232,64,.25);
+}
+
+footer {
+  border-top: 1px solid var(--dim2);
+  padding: 24px 72px;
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--bg1);
+}
+.f-brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 17px; letter-spacing: .1em; color: var(--w);
+}
+.f-brand .y { color: var(--y); }
+.f-copy { font-size: 11px; color: var(--dim); }
+
+/* ══════════════════════
+   REVEAL
+══════════════════════ */
+.reveal {
+  opacity: 0; transform: translateY(20px);
+  transition: opacity .72s ease, transform .72s ease;
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* ══════════════════════
+   KEYFRAMES
+══════════════════════ */
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(240,232,64,.5); }
+  60%       { box-shadow: 0 0 0 8px rgba(240,232,64,0); }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ══════════════════════
+   RESPONSIVE
+══════════════════════ */
+@media (max-width: 1024px) {
+  .hero { grid-template-columns: 1fr; min-height: unset; }
+  .hero-right { display: none; }
+  .hero-left { padding: 60px 28px; }
+  .ba-inner, .sec, .sec-sm, .method-inner { padding-left: 28px; padding-right: 28px; }
+  .ba-header { grid-template-columns: 1fr; gap: 24px; }
+  .ba-cards { grid-template-columns: 1fr 1fr; }
+  .ex-grid { grid-template-columns: 1fr 1fr; }
+  .flow { grid-template-columns: 1fr; }
+  .flow-arrow { display: none; }
+  .flow-out { border-left: 1px solid var(--dim2); border-top: none; border-radius: 0; }
+  .flow-out:last-child { border-radius: 0 0 8px 8px; }
+  .pain-inner { grid-template-columns: 1fr; gap: 40px; }
+  .see-grid { grid-template-columns: 1fr 1fr; }
+  .who-grid { grid-template-columns: 1fr 1fr; }
+  .cta-box { grid-template-columns: 1fr; }
+  footer { padding: 20px 28px; flex-direction: column; gap: 10px; text-align: center; }
+}
+@media (max-width: 640px) {
+  .ba-cards, .ex-grid, .see-grid, .who-grid { grid-template-columns: 1fr; }
+  .form-box { max-width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+
+  <!-- LEFT — headline + form -->
+  <div class="hero-left">
+
+    <div class="event-tag">
+      <div class="live-dot"></div>
+      Webinar Grátis — 3 de Março às 21h
+    </div>
+
+    <h1 class="hero-h1">
+      Aprende a transformar<br>
+      simples fotos em<br>
+      <span class="y">Anúncios</span> e<br>
+      <span class="y">Catálogos</span><br>
+      <span class="stroke">vencedores</span> — com IA.
+    </h1>
+
+    <p class="hero-sub">
+      Com imagens que constroem credibilidade e aumentam as vendas —
+      <strong>poupando centenas de horas e milhares de euros.</strong>
+    </p>
+
+    <!-- INLINE FORM -->
+    <div class="form-box">
+      <div class="form-spots">
+        <div class="spot-dot"></div>
+        Inscrições abertas — vagas limitadas
+      </div>
+
+      <div class="f-err" id="formErr"></div>
+
+      <div class="f-field">
+        <label class="f-lbl" for="iName">Nome</label>
+        <input class="f-inp" type="text" id="iName" placeholder="Como te chamamos?" autocomplete="given-name">
+      </div>
+      <div class="f-field">
+        <label class="f-lbl" for="iEmail">Email</label>
+        <input class="f-inp" type="email" id="iEmail" placeholder="email@exemplo.com" autocomplete="email">
+      </div>
+      <button class="f-submit" id="subBtn" onclick="handleSubmit()">
+        <span class="bt">Inscrever-me já!</span>
+        <div class="spinner"></div>
+      </button>
+      <p class="f-note">Grátis. Sem cartão. Ao inscreveres-te aceitas receber informações sobre o webinar.</p>
+    </div>
+
+    <!-- bullets -->
+    <div class="bullets">
+      <div class="bullet">
+        <div class="bullet-icon">
+          <svg viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#F0E840" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        Aprende o AI Genius Framework para moda
+      </div>
+      <div class="bullet">
+        <div class="bullet-icon">
+          <svg viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#F0E840" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        Acelera a tua produção de conteúdo com IA
+      </div>
+      <div class="bullet">
+        <div class="bullet-icon">
+          <svg viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#F0E840" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        Diz adeus à falta de imagens profissionais
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT — full-bleed "depois" photo with "antes" float -->
+  <div class="hero-right">
+
+    <!-- placeholder gradient for the "depois" image -->
+    <div class="photo-after"></div>
+    <div class="photo-placeholder">
+      <div class="photo-placeholder-icon">👗</div>
+      <div class="photo-placeholder-label">Substitui pela tua foto "Depois"</div>
+    </div>
+
+    <!-- "antes" floating card -->
+    <div class="antes-card">
+      <div class="antes-card-img">📦</div>
+      <div class="antes-card-label">Antes</div>
+    </div>
+
+    <!-- "depois" badge -->
+    <div class="depois-badge">Depois ✦</div>
+  </div>
+</section>
+
+<!-- ══ ANTES / DEPOIS DRAG ══ -->
+<div class="ba-wrap" id="antes-depois">
+  <div class="ba-inner">
+    <div class="ba-header">
+      <div class="reveal">
+        <div class="sec-tag">Antes &amp; Depois</div>
+        <h2 class="sec-h2">Arrasta e<br><span class="y">vê a diff.</span></h2>
+      </div>
+      <div class="reveal" style="transition-delay:.1s">
+        <p class="ba-desc">
+          De uma foto simples — tirada com telemóvel ou em fundo branco —
+          a IA gera <strong>imagens com qualidade de estúdio profissional</strong>,
+          prontas a usar em anúncios, redes sociais e catálogos.
+        </p>
+      </div>
+    </div>
+
+    <div class="slider reveal" id="baSlider">
+      <div class="sl-side sl-before-bg">
+        <span class="sl-label sl-label-b">Antes — foto simples</span>
+        <div class="sl-emoji">📦</div>
+        <div class="sl-caption sl-caption-b">Foto com<br>telemóvel</div>
+        <span style="position:absolute;bottom:14px;left:14px;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);background:rgba(255,255,255,.04);border-radius:4px;padding:4px 12px;">← A tua foto "antes"</span>
+      </div>
+      <div class="sl-side sl-after-bg" id="slAfter">
+        <span class="sl-label sl-label-a">Depois — com IA</span>
+        <div class="sl-emoji-a">✨</div>
+        <div class="sl-caption sl-caption-a">Imagem<br>editorial</div>
+        <span style="position:absolute;bottom:14px;right:14px;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--y);background:rgba(240,232,64,.08);border:1px solid rgba(240,232,64,.2);border-radius:4px;padding:4px 12px;">Foto "depois" →</span>
+      </div>
+      <div class="sl-line" id="slBar"></div>
+      <div class="sl-handle" id="slKnob">⇄</div>
+    </div>
+    <div class="sl-hint">← Arrasta para comparar →</div>
+
+    <!-- hover before/after cards -->
+    <div class="ba-cards">
+      <div class="ba-card reveal">
+        <div class="bc-face bc-b">
+          <div class="bc-ico">👗</div>
+          <span class="bc-pill bc-pill-b">Antes</span>
+          <div class="bc-text bc-text-b">Roupa<br>em cabide</div>
+          <div class="bc-tip">Passa o rato para ver</div>
+        </div>
+        <div class="bc-face bc-a">
+          <div class="bc-ico-a">✨</div>
+          <span class="bc-pill bc-pill-a">Depois — IA</span>
+          <div class="bc-text bc-text-a">Anúncio<br>editorial</div>
+        </div>
+        <span class="bc-ph">Placeholder</span>
+      </div>
+      <div class="ba-card reveal" style="transition-delay:.1s">
+        <div class="bc-face bc-b">
+          <div class="bc-ico">👠</div>
+          <span class="bc-pill bc-pill-b">Antes</span>
+          <div class="bc-text bc-text-b">Calçado<br>fundo branco</div>
+          <div class="bc-tip">Passa o rato para ver</div>
+        </div>
+        <div class="bc-face bc-a">
+          <div class="bc-ico-a">✨</div>
+          <span class="bc-pill bc-pill-a">Depois — IA</span>
+          <div class="bc-text bc-text-a">Imagem<br>de marca</div>
+        </div>
+        <span class="bc-ph">Placeholder</span>
+      </div>
+      <div class="ba-card reveal" style="transition-delay:.2s">
+        <div class="bc-face bc-b">
+          <div class="bc-ico">💍</div>
+          <span class="bc-pill bc-pill-b">Antes</span>
+          <div class="bc-text bc-text-b">Bijuteria<br>em mesa</div>
+          <div class="bc-tip">Passa o rato para ver</div>
+        </div>
+        <div class="bc-face bc-a">
+          <div class="bc-ico-a">✨</div>
+          <span class="bc-pill bc-pill-a">Depois — IA</span>
+          <div class="bc-text bc-text-a">Visual<br>premium</div>
+        </div>
+        <span class="bc-ph">Placeholder</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ RESULTS ══ -->
+<div class="results-wrap">
+  <div class="sec" style="padding-bottom:0;">
+    <div class="sec-tag reveal">Resultados</div>
+    <h2 class="sec-h2 reveal">O que crias<br><span class="y">com IA.</span></h2>
+    <p class="reveal" style="font-size:15px;font-weight:300;color:var(--dim);line-height:1.8;max-width:520px;margin-top:16px;margin-bottom:0;transition-delay:.1s;">
+      Selecciona o tipo de conteúdo para ver o que é possível criar a partir de <strong style="font-weight:500;color:var(--w);">uma única foto de produto.</strong>
+    </p>
+  </div>
+  <div class="sec" style="padding-top:36px;">
+    <div class="tabs reveal">
+      <button class="tab active" onclick="switchTab('ads')">📣 Anúncios</button>
+      <button class="tab" onclick="switchTab('social')">📱 Redes Sociais</button>
+      <button class="tab" onclick="switchTab('cat')">📖 Catálogos</button>
+    </div>
+
+    <div class="ex-panel active" id="panel-ads">
+      <div class="ex-grid">
+        <div class="ex-card reveal">
+          <div class="ex-num">01</div><div class="ex-badge">Meta Ads</div>
+          <div class="ex-icon">📣</div>
+          <div class="ex-title">Anúncio<br>de produto</div>
+          <div class="ex-desc">Criativo com visual optimizado para conversão no Facebook e Instagram.</div>
+          <div class="ex-cta">Coloca a tua imagem</div>
+          <div class="ex-ph">Placeholder</div>
+        </div>
+        <div class="ex-card reveal" style="transition-delay:.1s">
+          <div class="ex-num">02</div><div class="ex-badge">Google Shopping</div>
+          <div class="ex-icon">🛒</div>
+          <div class="ex-title">Anúncio<br>de catálogo</div>
+          <div class="ex-desc">Imagem profissional optimizada para Google Shopping e Marketplace.</div>
+          <div class="ex-cta">Coloca a tua imagem</div>
+          <div class="ex-ph">Placeholder</div>
+        </div>
+        <div class="ex-card reveal" style="transition-delay:.2s">
+          <div class="ex-num">03</div><div class="ex-badge">Retargeting</div>
+          <div class="ex-icon">🎯</div>
+          <div class="ex-title">Criativo<br>retargeting</div>
+          <div class="ex-desc">Visual com urgência e chamada à acção para recuperar visitas ao site.</div>
+          <div class="ex-cta">Coloca a tua imagem</div>
+          <div class="ex-ph">Placeholder</div>
+        </div>
+      </div>
+    </div>
+    <div class="ex-panel" id="panel-social">
+      <div class="ex-grid">
+        <div class="ex-card reveal">
+          <div class="ex-num">01</div><div class="ex-badge">Feed</div>
+          <div class="ex-icon">📸</div>
+          <div class="ex-title">Post<br>editorial</div>
+          <div class="ex-desc">Imagem com cenário editorial — aspeto de campanha de moda profissional.</div>
+          <div class="ex-cta">Coloca a tua imagem</div>
+          <div class="ex-ph">Placeholder</div>
+        </div>
+        <div class="ex-card reveal" style="transition-delay:.1s">
+          <div class="ex-num">02</div><div class="ex-badge">Stories</div>
+          <div class="ex-icon">📱</div>
+          <div class="ex-title">Story<br>de produto</div>
+          <div class="ex-desc">Formato vertical para stories e reels com composição profissional.</div>
+          <div class="ex-cta">Coloca a tua imagem</div>
+          <div class="ex-ph">Placeholder</div>
+        </div>
+        <div class="ex-card reveal" style="transition-delay:.2s">
+          <div class="ex-num">03</div><div class="ex-badge">Carrossel</div>
+          <div class="ex-icon">🎠</div>
+          <div class="ex-title">Carrossel<br>de coleção</div>
+          <div class="ex-desc">Múltiplos slides com coerência visual para apresentar a coleção completa.</div>
+          <div class="ex-cta">Coloca a tua imagem</div>
+          <div class="ex-ph">Placeholder</div>
+        </div>
+      </div>
+    </div>
+    <div class="ex-panel" id="panel-cat">
+      <div class="ex-grid">
+        <div class="ex-card reveal">
+          <div class="ex-num">01</div><div class="ex-badge">Capa</div>
+          <div class="ex-icon">📖</div>
+          <div class="ex-title">Capa de<br>catálogo</div>
+          <div class="ex-desc">Capa com imagem hero, tipografia e identidade visual de marca premium.</div>
+          <div class="ex-cta">Coloca a tua imagem</div>
+          <div class="ex-ph">Placeholder</div>
+        </div>
+        <div class="ex-card reveal" style="transition-delay:.1s">
+          <div class="ex-num">02</div><div class="ex-badge">Página</div>
+          <div class="ex-icon">📋</div>
+          <div class="ex-title">Página de<br>produto</div>
+          <div class="ex-desc">Layout com foto e detalhes — aspeto de lookbook profissional.</div>
+          <div class="ex-cta">Coloca a tua imagem</div>
+          <div class="ex-ph">Placeholder</div>
+        </div>
+        <div class="ex-card reveal" style="transition-delay:.2s">
+          <div class="ex-num">03</div><div class="ex-badge">Spread</div>
+          <div class="ex-icon">🗂️</div>
+          <div class="ex-title">Spread de<br>coleção</div>
+          <div class="ex-desc">Página dupla com toda a coleção — perfeita para PDF ou impressão.</div>
+          <div class="ex-cta">Coloca a tua imagem</div>
+          <div class="ex-ph">Placeholder</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ METHOD ══ -->
+<div class="method-wrap">
+  <div class="method-inner">
+    <div class="sec-tag reveal">O Método</div>
+    <h2 class="sec-h2 reveal">Uma foto.<br><span class="y">Três outputs.</span></h2>
+    <div class="flow reveal">
+      <div class="flow-src">
+        <div class="fsrc-lbl">Ponto de partida</div>
+        <div class="fsrc-ttl">A tua foto de produto</div>
+        <div class="fsrc-sub">Qualquer foto. Telemóvel. Fundo branco. Não importa.</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-out">
+        <div class="fo-num">01</div>
+        <div class="fo-ico">📣</div>
+        <div class="fo-ttl">Anúncios que vendem</div>
+        <div class="fo-dsc">Criativos com visual e formato certos para converter — Meta, Google, e-mail.</div>
+        <span class="fo-badge">Vendas</span>
+      </div>
+      <div class="flow-out">
+        <div class="fo-num">02</div>
+        <div class="fo-ico">📱</div>
+        <div class="fo-ttl">Conteúdo para redes</div>
+        <div class="fo-dsc">Posts, stories, reels e carrosséis com imagem de marca — todos os dias.</div>
+        <span class="fo-badge">Alcance</span>
+      </div>
+      <div class="flow-out">
+        <div class="fo-num">03</div>
+        <div class="fo-ico">📖</div>
+        <div class="fo-ttl">Catálogos completos</div>
+        <div class="fo-dsc">Catálogos com aspeto profissional — prontos a partilhar ou imprimir.</div>
+        <span class="fo-badge">Profissionalismo</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PAIN ══ -->
+<div class="sec">
+  <div class="pain-inner">
+    <div class="reveal">
+      <div class="sec-tag">O Problema</div>
+      <h2 class="sec-h2">Tens produtos<br><span class="y">bons.</span> O conteúdo<br>é que <span class="stroke">não acompanha.</span></h2>
+      <p class="pain-lead">Faltam imagens profissionais e falta conteúdo constante para alimentar as vendas.</p>
+    </div>
+    <div class="pain-list">
+      <div class="pain-item reveal"><div class="pi-num">01</div><p class="pi-txt">Stock novo mas <strong>zero conteúdo pronto para publicar</strong>. Enquanto esperas pelo fotógrafo, a concorrência já está a vender.</p></div>
+      <div class="pain-item reveal"><div class="pi-num">02</div><p class="pi-txt">Fotos <strong>amadoras ou genéricas</strong> — não constroem a imagem da marca nem justificam o preço que praticas.</p></div>
+      <div class="pain-item reveal"><div class="pi-num">03</div><p class="pi-txt">Anúncios que <strong>não convertem</strong> porque o criativo não é apelativo — e pagas para aparecer sem resultados.</p></div>
+      <div class="pain-item reveal"><div class="pi-num">04</div><p class="pi-txt">Redes paradas porque <strong>nunca tens material suficiente</strong>. Reciclas as mesmas imagens até deixares de publicar.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ WHAT YOU'LL SEE ══ -->
+<div class="sec-sm" style="padding-top:0;">
+  <div class="sec-tag reveal">No Webinar</div>
+  <h2 class="sec-h2 reveal">Sem slides.<br><span class="y">Vês acontecer.</span></h2>
+  <div class="see-grid">
+    <div class="see-card reveal">
+      <div class="see-step">Momento 01</div>
+      <div class="see-ttl">Foto → Profissional</div>
+      <p class="see-dsc">Partes de uma foto simples. A IA transforma-a numa imagem de estúdio — ao vivo, à tua frente.</p>
+      <span class="see-pill">Ao Vivo</span>
+    </div>
+    <div class="see-card reveal" style="transition-delay:.1s">
+      <div class="see-step">Momento 02</div>
+      <div class="see-ttl">Foto → Anúncio + Redes</div>
+      <p class="see-dsc">Vês como essa imagem se torna num anúncio e conteúdo para as redes — ao vivo.</p>
+      <span class="see-pill">Ao Vivo</span>
+    </div>
+    <div class="see-card reveal" style="transition-delay:.2s">
+      <div class="see-step">Momento 03</div>
+      <div class="see-ttl">Produto → Catálogo</div>
+      <p class="see-dsc">Com vários produtos, vês como se monta um catálogo de coleção inteiro em minutos.</p>
+      <span class="see-pill">Ao Vivo</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ WHO ══ -->
+<div class="who-inner">
+  <div class="sec-sm">
+    <div class="sec-tag reveal">Para Quem É</div>
+    <h2 class="sec-h2 reveal">Qualquer lojista<br>que queira <span class="y">vender mais.</span></h2>
+    <div class="who-grid">
+      <div class="who-card reveal"><span class="who-emoji">👗</span><div class="who-ttl">Lojas de Roupa</div><div class="who-dsc">Coleções novas com conteúdo pronto no mesmo dia — sem esperar pelo fotógrafo.</div></div>
+      <div class="who-card reveal" style="transition-delay:.08s"><span class="who-emoji">👠</span><div class="who-ttl">Calçado e Malas</div><div class="who-dsc">Anúncios e catálogos com aspeto premium para produtos que merecem ser valorizados.</div></div>
+      <div class="who-card reveal" style="transition-delay:.16s"><span class="who-emoji">💍</span><div class="who-ttl">Bijuteria</div><div class="who-dsc">Imagens profissionais que justificam o preço e constroem a percepção de marca.</div></div>
+      <div class="who-card reveal" style="transition-delay:.24s"><span class="who-emoji">🛍️</span><div class="who-ttl">Multi-marca</div><div class="who-dsc">Conteúdo ilimitado para múltiplas categorias — sem aumentar custos.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FOOTER CTA ══ -->
+<div class="footer-cta">
+  <h2 class="footer-cta-h reveal">Depois de veres,<br><span class="y">decides tu.</span></h2>
+  <p class="footer-cta-sub reveal" style="transition-delay:.1s;">
+    Vais ver, em tempo real, uma foto simples tornar-se em anúncios, conteúdo e catálogos —
+    <strong>sem fotógrafo, sem designer, sem estúdio.</strong>
+  </p>
+  <a href="#" onclick="document.getElementById('iName').focus();window.scrollTo({top:0,behavior:'smooth'});return false;" class="btn-cta-big reveal" style="transition-delay:.2s;">Inscrever-me grátis →</a>
+  <div style="margin-top:16px;font-size:12px;color:var(--dim);letter-spacing:.08em;">
+    3 de Março · 21h00 · Online · Grátis · 100 vagas
+  </div>
+</div>
+
+<footer>
+  <div class="f-brand">IA <span class="y">para</span> Moda</div>
+  <div class="f-copy">© 2025 · Webinar gratuito · 3 de Março, 21h</div>
+</footer>
+
+<script>
+/* REVEAL */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+/* SLIDER */
+(function () {
+  const wrap   = document.getElementById('baSlider');
+  const after  = document.getElementById('slAfter');
+  const bar    = document.getElementById('slBar');
+  const knob   = document.getElementById('slKnob');
+  let dragging = false;
+
+  function set(pct) {
+    pct = Math.max(4, Math.min(96, pct));
+    after.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+    bar.style.left   = pct + '%';
+    knob.style.left  = pct + '%';
+  }
+  function toPct(e) {
+    const r = wrap.getBoundingClientRect();
+    return (((e.touches ? e.touches[0].clientX : e.clientX) - r.left) / r.width) * 100;
+  }
+  set(50);
+  wrap.addEventListener('mousedown',  e => { dragging = true; set(toPct(e)); });
+  wrap.addEventListener('touchstart', e => { dragging = true; set(toPct(e)); }, { passive: true });
+  window.addEventListener('mousemove', e => { if (dragging) set(toPct(e)); });
+  window.addEventListener('touchmove', e => { if (dragging) set(toPct(e)); }, { passive: true });
+  window.addEventListener('mouseup',   () => dragging = false);
+  window.addEventListener('touchend',  () => dragging = false);
+})();
+
+/* TABS */
+function switchTab(id) {
+  const ids = ['ads', 'social', 'cat'];
+  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', ids[i] === id));
+  document.querySelectorAll('.ex-panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + id));
+}
+
+/* FORM */
+async function handleSubmit() {
+  const n   = document.getElementById('iName');
+  const em  = document.getElementById('iEmail');
+  const btn = document.getElementById('subBtn');
+  setErr('');
+  if (!n.value.trim())  { setErr('Por favor, indica o teu nome.'); n.focus(); return; }
+  if (!em.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em.value)) { setErr('Por favor, indica um e-mail válido.'); em.focus(); return; }
+  btn.classList.add('loading'); btn.disabled = true;
+  try {
+    const res  = await fetch('/api/subscribe', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: n.value.trim(), email: em.value.trim() })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || 'Erro ao registar.');
+    window.location.href = '/sucesso.html';
+  } catch (err) {
+    setErr(err.message || 'Ocorreu um erro. Tenta novamente.');
+    btn.classList.remove('loading'); btn.disabled = false;
+  }
+}
+function setErr(msg) {
+  const el = document.getElementById('formErr');
+  el.textContent = msg; el.classList.toggle('vis', !!msg);
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && ['iName', 'iEmail'].includes(e.target.id)) handleSubmit();
+});
+</script>
+</body>
+</html>

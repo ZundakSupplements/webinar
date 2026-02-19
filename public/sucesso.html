@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estás inscrito! — Webinar IA para Moda</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Epilogue:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F4EF;
+    --ink: #1E1B15;
+    --accent: #C4411A;
+    --accent2: #E8A84C;
+    --sand: #C8B89A;
+    --muted: #8C7F6E;
+    --border: #DDD5C5;
+    --white: #FEFCF8;
+    --green: #1A7A4A;
+    --green-bg: #EBF7F1;
+    --whatsapp: #25D366;
+    --whatsapp-dark: #1DA851;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Epilogue', sans-serif;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 40px 24px;
+  }
+
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    max-width: 560px;
+    width: 100%;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(24px);
+    animation: fadeUp 0.7s ease forwards 0.1s;
+  }
+
+  .card-top {
+    background: var(--ink);
+    padding: 48px 52px 40px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .card-top::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 240px; height: 240px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(196,65,26,0.2) 0%, transparent 70%);
+  }
+
+  .success-icon {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: rgba(26,122,74,0.15);
+    border: 1px solid rgba(26,122,74,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    font-size: 28px;
+    position: relative;
+    z-index: 1;
+    animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 0.5s;
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  .card-top h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    color: var(--white);
+    line-height: 1.15;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .card-top h1 em { font-style: italic; color: var(--accent2); }
+
+  .card-top p {
+    font-size: 15px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.6;
+    position: relative;
+    z-index: 1;
+  }
+
+  .card-body {
+    padding: 40px 52px;
+  }
+
+  /* Details */
+  .event-details {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 24px;
+    margin-bottom: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .event-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .event-row:last-child { border-bottom: none; }
+
+  .event-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+    width: 28px;
+    text-align: center;
+  }
+
+  .event-key {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1px;
+  }
+
+  .event-val {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .event-val.accent { color: var(--accent); font-weight: 600; }
+
+  /* WhatsApp CTA */
+  .wa-section {
+    text-align: center;
+  }
+
+  .wa-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .wa-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--ink);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .wa-sub {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+
+  .wa-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: var(--whatsapp);
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 16px 36px;
+    border-radius: 2px;
+    width: 100%;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .wa-btn:hover {
+    background: var(--whatsapp-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(37,211,102,0.3);
+  }
+
+  .wa-icon {
+    width: 22px; height: 22px;
+    flex-shrink: 0;
+  }
+
+  .wa-note {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  /* Divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 28px 0;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Confirmation message */
+  .confirm-note {
+    background: var(--green-bg);
+    border: 1px solid rgba(26,122,74,0.2);
+    border-radius: 3px;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: var(--green);
+    font-weight: 500;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 28px;
+  }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.5); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  @media (max-width: 600px) {
+    .card-top, .card-body { padding: 36px 28px; }
+    .card-top h1 { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="card-top">
+    <div class="success-icon">✓</div>
+    <h1>Estás inscrito,<br><em>até dia 3!</em></h1>
+    <p>O teu lugar está garantido. Vai receber um e-mail de confirmação em breve.</p>
+  </div>
+
+  <div class="card-body">
+
+    <div class="confirm-note">
+      <span>📩</span>
+      <span>Enviámos um e-mail de confirmação para o teu endereço. Verifica também a pasta de spam.</span>
+    </div>
+
+    <div class="event-details">
+      <div class="event-row">
+        <div class="event-icon">📅</div>
+        <div>
+          <div class="event-key">Data</div>
+          <div class="event-val accent">3 de Março de 2025</div>
+        </div>
+      </div>
+      <div class="event-row">
+        <div class="event-icon">🕘</div>
+        <div>
+          <div class="event-key">Hora</div>
+          <div class="event-val">21h00 (hora de Lisboa)</div>
+        </div>
+      </div>
+      <div class="event-row">
+        <div class="event-icon">🎥</div>
+        <div>
+          <div class="event-key">Formato</div>
+          <div class="event-val">Demonstração ao vivo online</div>
+        </div>
+      </div>
+      <div class="event-row">
+        <div class="event-icon">💰</div>
+        <div>
+          <div class="event-key">Preço</div>
+          <div class="event-val">100% gratuito</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider">Enquanto esperas</div>
+
+    <div class="wa-section">
+      <div class="wa-label">Comunidade</div>
+      <div class="wa-headline">Junta-te à comunidade<br>no WhatsApp</div>
+      <p class="wa-sub">Partilha dúvidas, vê exemplos antecipados e recebe o link do webinar diretamente no WhatsApp.</p>
+      <a href="TEU_LINK_WHATSAPP" target="_blank" rel="noopener" class="wa-btn">
+        <svg class="wa-icon" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        Entrar na comunidade WhatsApp
+      </a>
+      <p class="wa-note">Grupo gratuito · Podes sair quando quiseres</p>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
