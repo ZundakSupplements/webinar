@@ -317,9 +317,9 @@ body {
 .antes-card {
   position: absolute;
   top: 40px;
-  left: -20px;
+  left: 20px;
   z-index: 10;
-  width: 140px;
+  width: 200px;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 20px 48px rgba(0,0,0,.6);
@@ -333,7 +333,7 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 40px;
-  opacity: .6;
+  opacity: 1;
 }
 .antes-card-label {
   background: rgba(0,0,0,.75);
@@ -464,7 +464,7 @@ body {
 .slider {
   position: relative;
   overflow: hidden;
-  aspect-ratio: 16/9;
+  aspect-ratio: 1/1;
   border-radius: 8px;
   cursor: ew-resize;
   user-select: none;
@@ -540,6 +540,23 @@ body {
   color: var(--dim);
 }
 
+/* Slider images */
+#slBefore, #slAfter{
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* When images exist, hide the demo UI (emoji/text) */
+.has-img .sl-emoji,
+.has-img .sl-emoji-a,
+.has-img .sl-caption,
+.has-img .sl-label,
+.has-img span[style*="A tua foto"],
+.has-img span[style*="Foto \"depois\""]{
+  display:none !important;
+}
+
 /* hover cards */
 .ba-cards {
   display: grid;
@@ -602,6 +619,13 @@ body {
   border-radius: 4px; padding: 3px 8px;
 }
 
+.bc-face.has-img{
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.ba-card.has-img .bc-ph{ display:none !important; }
 /* ══════════════════════
    RESULTS / EXAMPLES
 ══════════════════════ */
@@ -1065,7 +1089,7 @@ footer {
 
     <!-- "antes" floating card (URL configurável) -->
     <div class="antes-card">
-      <div class="antes-card-img" id="heroBeforeImg">📦</div>
+      <div class="antes-card-img" id="heroBeforeImg"></div>
       <div class="antes-card-label">Antes</div>
     </div>
 
@@ -1112,41 +1136,41 @@ footer {
     <!-- hover before/after cards -->
     <div class="ba-cards">
       <div class="ba-card reveal">
-        <div class="bc-face bc-b" id="hover1Before">
+        <div class="bc-face bc-b" id="hover1Before" data-img="https://dhqdamfisdbbcieqlpvt.supabase.co/storage/v1/object/sign/ugc-inputs/4e962775-cb55-4301-bc33-081eacb96c46/1764238883238-ur4oba.jpeg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9lZWNiNWY4Mi01ZDQyLTQ5YjEtYWFkOC1lZjNiZGQ0MWMwYWYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJ1Z2MtaW5wdXRzLzRlOTYyNzc1LWNiNTUtNDMwMS1iYzMzLTA4MWVhY2I5NmM0Ni8xNzY0MjM4ODgzMjM4LXVyNG9iYS5qcGVnIiwiaWF0IjoxNzcxNTg3NjEzLCJleHAiOjE3NzE1OTEyMTN9.uK-xWo7N3LuGrXKC1-4ooWIK8CF54NkNbgszuH7b5U8">
           <div class="bc-ico">👗</div>
           <span class="bc-pill bc-pill-b">Antes</span>
           <div class="bc-text bc-text-b">Roupa<br>em cabide</div>
           <div class="bc-tip">Passa o rato para ver</div>
         </div>
-        <div class="bc-face bc-a" id="hover1After">
-          <div class="bc-ico-a">✨</div>
-          <span class="bc-pill bc-pill-a">Depois — IA</span>
-          <div class="bc-text bc-text-a">Anúncio<br>editorial</div>
-        </div>
-        <span class="bc-ph">Placeholder</span>
-      </div>
-      <div class="ba-card reveal" style="transition-delay:.1s">
-        <div class="bc-face bc-b" id="hover2Before">
-          <div class="bc-ico">👠</div>
-          <span class="bc-pill bc-pill-b">Antes</span>
-          <div class="bc-text bc-text-b">Calçado<br>fundo branco</div>
-          <div class="bc-tip">Passa o rato para ver</div>
-        </div>
-        <div class="bc-face bc-a" id="hover2After">
+        <div class="bc-face bc-a" id="hover1After" data-img="https://dhqdamfisdbbcieqlpvt.supabase.co/storage/v1/object/public/ugc/09d0e818-5704-4602-ad4e-82fad95bc79a/8c4423c3-26bc-4d5a-82b7-49a72902d957/0.png">
           <div class="bc-ico-a">✨</div>
           <span class="bc-pill bc-pill-a">Depois — IA</span>
           <div class="bc-text bc-text-a">Imagem<br>de marca</div>
         </div>
         <span class="bc-ph">Placeholder</span>
       </div>
+      <div class="ba-card reveal" style="transition-delay:.1s">
+        <div class="bc-face bc-b" id="hover2Before" data-img="https://dhqdamfisdbbcieqlpvt.supabase.co/storage/v1/object/public/source-images/ce835465-83c8-48ae-b5dc-a00ad11cd5e7/1771489475151-oke3je.webp">
+          <div class="bc-ico">👠</div>
+          <span class="bc-pill bc-pill-b">Antes</span>
+          <div class="bc-text bc-text-b">Calçado<br>fundo branco</div>
+          <div class="bc-tip">Passa o rato para ver</div>
+        </div>
+        <div class="bc-face bc-a" id="hover2After" data-img="https://dhqdamfisdbbcieqlpvt.supabase.co/storage/v1/object/public/ugc/ce835465-83c8-48ae-b5dc-a00ad11cd5e7/3f4260dd-f8b7-470b-8c00-4aa47a5aa0bc/0.png">
+          <div class="bc-ico-a">✨</div>
+          <span class="bc-pill bc-pill-a">Depois — IA</span>
+          <div class="bc-text bc-text-a">Anúncio<br>editorial</div>
+        </div>
+        <span class="bc-ph">Placeholder</span>
+      </div>
       <div class="ba-card reveal" style="transition-delay:.2s">
-        <div class="bc-face bc-b" id="hover3Before">
+        <div class="bc-face bc-b" id="hover3Before" data-img="https://dhqdamfisdbbcieqlpvt.supabase.co/storage/v1/object/sign/source-images/4e962775-cb55-4301-bc33-081eacb96c46/1771587243799-hhomeb.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9lZWNiNWY4Mi01ZDQyLTQ5YjEtYWFkOC1lZjNiZGQ0MWMwYWYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzb3VyY2UtaW1hZ2VzLzRlOTYyNzc1LWNiNTUtNDMwMS1iYzMzLTA4MWVhY2I5NmM0Ni8xNzcxNTg3MjQzNzk5LWhob21lYi53ZWJwIiwiaWF0IjoxNzcxNTg3Mzc3LCJleHAiOjE3NzE1OTA5Nzd9.jca71kdmawc-Hd8vxlwn24GYy5__JsP19ROYIo5gmR4">
           <div class="bc-ico">💍</div>
           <span class="bc-pill bc-pill-b">Antes</span>
           <div class="bc-text bc-text-b">Bijuteria<br>em mesa</div>
           <div class="bc-tip">Passa o rato para ver</div>
         </div>
-        <div class="bc-face bc-a" id="hover3After">
+        <div class="bc-face bc-a" id="hover3After" data-img="https://dhqdamfisdbbcieqlpvt.supabase.co/storage/v1/object/public/bulk-background-product-views/4e962775-cb55-4301-bc33-081eacb96c46/6a188a90-00b4-43ae-94ed-56b8b3061f01/macro.webp">
           <div class="bc-ico-a">✨</div>
           <span class="bc-pill bc-pill-a">Depois — IA</span>
           <div class="bc-text bc-text-a">Visual<br>premium</div>
@@ -1158,7 +1182,7 @@ footer {
 </div>
 
 <!-- ══ RESULTS ══ -->
-<div class="results-wrap">
+<!-- <div class="results-wrap">
   <div class="sec" style="padding-bottom:0;">
     <div class="sec-tag reveal">Resultados</div>
     <h2 class="sec-h2 reveal">O que crias<br><span class="y">com IA.</span></h2>
@@ -1258,7 +1282,7 @@ footer {
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 <!-- ══ METHOD ══ -->
 <div class="method-wrap">
@@ -1557,6 +1581,89 @@ form.addEventListener('submit', async (e) => {
     setLoading(false);
   }
 });
+</script>
+<script>
+  const DEMO_IMAGES = {
+    heroAfter: "https://dhqdamfisdbbcieqlpvt.supabase.co/storage/v1/object/public/ugc/4e962775-cb55-4301-bc33-081eacb96c46/d9b377a3-44e3-42ca-bc92-978eba406c48/1.png",
+    heroBefore: "https://dhqdamfisdbbcieqlpvt.supabase.co/storage/v1/object/sign/source-images/4e962775-cb55-4301-bc33-081eacb96c46/1771172127487-lwp5ii.jpeg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9lZWNiNWY4Mi01ZDQyLTQ5YjEtYWFkOC1lZjNiZGQ0MWMwYWYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzb3VyY2UtaW1hZ2VzLzRlOTYyNzc1LWNiNTUtNDMwMS1iYzMzLTA4MWVhY2I5NmM0Ni8xNzcxMTcyMTI3NDg3LWx3cDVpaS5qcGVnIiwiaWF0IjoxNzcxNTg2MjE3LCJleHAiOjE3NzE1ODk4MTd9.egimYjw2dCl3JQJ1ihlHMAPndZ9pZ8akHutH2VW3aEc",
+  };
+
+  function setBg(id, url) {
+    const el = document.getElementById(id);
+    if (!el || !url) return;
+    el.style.backgroundImage = `url("${url}")`;
+    el.style.backgroundSize = "cover";
+    el.style.backgroundPosition = "center";
+    el.style.backgroundRepeat = "no-repeat";
+  }
+
+  // aplica as imagens
+  setBg("heroAfterImg", DEMO_IMAGES.heroAfter);
+  setBg("heroBeforeImg", DEMO_IMAGES.heroBefore);
+
+  // opcional: esconder placeholders se existir imagem
+  if (DEMO_IMAGES.heroAfter) {
+    const ph = document.getElementById("heroAfterPh");
+    if (ph) ph.style.display = "none";
+  }
+</script>
+
+<script>
+  // Mete aqui as tuas URLs (ou usa /demo-antes.jpg e /demo-depois.jpg se estiverem em /public)
+  const SLIDER_DEMO = {
+    after: "https://dhqdamfisdbbcieqlpvt.supabase.co/storage/v1/object/sign/ugc-inputs/4e962775-cb55-4301-bc33-081eacb96c46/1770116954874-assqyi.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9lZWNiNWY4Mi01ZDQyLTQ5YjEtYWFkOC1lZjNiZGQ0MWMwYWYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJ1Z2MtaW5wdXRzLzRlOTYyNzc1LWNiNTUtNDMwMS1iYzMzLTA4MWVhY2I5NmM0Ni8xNzcwMTE2OTU0ODc0LWFzc3F5aS53ZWJwIiwiaWF0IjoxNzcxNTg2MTgwLCJleHAiOjE3NzE1ODk3ODB9.Lt-tAAwth0NnPfpSKB_qbN4YF_MUGK-ruz6TS9IIVJk",
+    before: "https://dhqdamfisdbbcieqlpvt.supabase.co/storage/v1/object/public/outfit-user-models/4e962775-cb55-4301-bc33-081eacb96c46/358fc4c8-06e1-4aea-8299-c79620e443c4/result_1769880389948.jpg"
+  };
+
+  function setSliderSide(id, url){
+    const el = document.getElementById(id);
+    if (!el || !url) return;
+    el.style.backgroundImage = `url("${url}")`;
+    el.classList.add("has-img");
+  }
+
+  setSliderSide("slBefore", SLIDER_DEMO.before);
+  setSliderSide("slAfter", SLIDER_DEMO.after);
+</script>
+
+<script>
+  // Applies any [data-img] as a background image + debugs failures in console
+  function applyDataImgBackgrounds() {
+    const els = document.querySelectorAll('[data-img]');
+    console.log('[data-img] found:', els.length);
+
+    els.forEach((el) => {
+      const url = el.getAttribute('data-img');
+      if (!url) return;
+
+      // Apply background
+      el.style.backgroundImage = `url("${url}")`;
+      el.style.backgroundSize = 'cover';
+      el.style.backgroundPosition = 'center';
+      el.style.backgroundRepeat = 'no-repeat';
+      el.classList.add('has-img');
+
+      // Debug: check if URL actually loads (CORS-safe test)
+      const img = new Image();
+      img.onload = () => console.log('✅ loaded:', url.slice(0, 120) + '...');
+      img.onerror = () => console.warn('❌ failed:', url);
+      img.src = url;
+    });
+
+    // Optional: hide placeholders if any image exists on card
+    document.querySelectorAll('.ba-card').forEach(card => {
+      if (card.querySelector('.bc-face.has-img')) {
+        card.classList.add('has-img');
+      }
+    });
+  }
+
+  // Ensure it runs after DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', applyDataImgBackgrounds);
+  } else {
+    applyDataImgBackgrounds();
+  }
 </script>
 </body>
 </html>
