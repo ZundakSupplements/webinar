@@ -151,9 +151,10 @@ body {
   letter-spacing: .18em;
   text-transform: uppercase;
   color: var(--dim);
+  color: white;
 }
 .f-inp {
-  background: rgba(255,255,255,.06);
+  background: rgba(255,255,255,1);
   border: 1px solid rgba(255,255,255,.1);
   border-radius: 4px;
   color: var(--w);
@@ -165,7 +166,7 @@ body {
   transition: border-color .18s, background .18s;
   width: 100%;
 }
-.f-inp::placeholder { color: rgba(255,255,255,.25); }
+.f-inp::placeholder { color: rgba(0,0,0,.65); }
 .f-inp:focus {
   border-color: var(--y);
   background: rgba(240,232,64,.04);
@@ -230,7 +231,7 @@ body {
 
 .f-note {
   font-size: 11px;
-  color: var(--dim);
+  color: rgba(255, 255, 255, 0.8);
   line-height: 1.55;
   margin-top: 2px;
 }
