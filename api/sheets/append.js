@@ -1,9 +1,16 @@
 const { google } = require("googleapis");
 
 function getPrivateKey() {
-  const key = process.env.GOOGLE_PRIVATE_KEY;
+  let key = process.env.GOOGLE_PRIVATE_KEY;
   if (!key) throw new Error("Missing GOOGLE_PRIVATE_KEY");
-  return key.replace(/\\n/g, "\n");
+
+  // remove aspas se a env var ficou tipo "-----BEGIN..."
+  key = key.trim().replace(/^"|"$/g, "");
+
+  // suporta tanto \n literais como \\n
+  key = key.replace(/\\n/g, "\n");
+
+  return key;
 }
 
 module.exports = async (req, res) => {
