@@ -446,11 +446,6 @@ form.addEventListener("submit", async (e) => {
   const fd = new FormData(form);
   const payload = Object.fromEntries(fd.entries());
 
-  // minimal validation (HTML required handles most)
-  if (!payload.nome || !payload.email) {
-    setErr("Preenche nome e email.");
-    return;
-  }
 
   btn.disabled = true;
   btn.classList.add("loading");
