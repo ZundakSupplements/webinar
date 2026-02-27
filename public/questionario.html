@@ -409,16 +409,9 @@ body{
 </div>
 
 <script>
-/* REVEAL (same pattern as your landing) */
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-}, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
-document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-/* FORM -> Google Sheets endpoint */
 const CONFIG = {
-  endpoint: "/api/sheets/append",
-  redirectOnSuccess: "" // e.g. "/sucesso.html" or keep empty for inline success
+  endpoint: "https://script.google.com/macros/s/AKfycbwXoy1kVZgS5TVehLwJuryX_WprqVJF_0s09vaRcqpmWMZ6XXqvucDyHAUylGQ_nPI/exec",
+  redirectOnSuccess: ""
 };
 
 const form = document.getElementById("qForm");
@@ -437,47 +430,52 @@ function setOk(msg){
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
-  setErr(""); setOk("");
-
-  // honeypot anti-bot
-  const hp = form.querySelector('input[name="company_website"]');
-  if (hp && hp.value && hp.value.trim().length > 0) return;
+  setErr("");
+  setOk("");
 
   const fd = new FormData(form);
   const payload = Object.fromEntries(fd.entries());
 
+  if (!payload.tipoNegocio || !payload.dificuldade || !payload.duvida) {
+    setErr("Preenche todos os campos.");
+    return;
+  }
 
   btn.disabled = true;
   btn.classList.add("loading");
 
-  try{
+  try {
     const res = await fetch(CONFIG.endpoint, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
       body: JSON.stringify({
-        ...payload,
-        submittedAt: new Date().toISOString(),
+        tipoNegocio: payload.tipoNegocio,
+        dificuldade: payload.dificuldade,
+        duvida: payload.duvida,
         page: location.pathname,
-        ref: document.referrer || ""
+        ref: document.referrer || "",
+        ua: navigator.userAgent
       })
     });
 
-    const data = await res.json().catch(() => ({}));
+    const data = await res.json();
 
-    if (!res.ok || !data.ok) {
-      setErr(data.error || "Falhou o envio. Tenta novamente.");
+    if (!data.ok) {
+      setErr(data.error || "Falhou o envio.");
       return;
     }
 
-    setOk("✅ Respostas enviadas. Obrigado!");
+    setOk("✅ Respostas enviadas com sucesso.");
     form.reset();
 
     if (CONFIG.redirectOnSuccess) {
       window.location.href = CONFIG.redirectOnSuccess;
     }
-  } catch (e){
-    setErr("Erro de rede. Verifica a ligação e tenta novamente.");
-  } finally{
+  } catch (error) {
+    setErr("Erro ao enviar. Tenta novamente.");
+  } finally {
     btn.disabled = false;
     btn.classList.remove("loading");
   }
