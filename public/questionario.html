@@ -343,59 +343,40 @@ body{
       </div>
 
       <div class="card-b">
-        <form class="form-box" id="qForm" novalidate>
-            <div class="f-err" id="formErr" role="alert" aria-live="polite"></div>
-            <div class="f-ok" id="formOk" role="status" aria-live="polite"></div>
+        <form
+          class="form-box"
+          id="qForm"
+          method="POST"
+          action="YOUR_GOOGLE_APPS_SCRIPT_WEBAPP_URL"
+          target="_blank"
+        >
+          <div class="f-field">
+            <label class="f-lbl" for="tipoNegocio">Que tipo de negócio tens?</label>
+            <select class="f-inp" id="tipoNegocio" name="tipoNegocio" required>
+              <option value="" disabled selected>Seleciona uma opção</option>
+              <option value="Físico">Físico</option>
+              <option value="Online">Online</option>
+              <option value="Ambos">Ambos</option>
+            </select>
+          </div>
 
-            <!-- honeypot anti-bot -->
-            <input type="text" name="company_website" tabindex="-1" autocomplete="off"
-                    style="position:absolute; opacity:0; height:0; width:0;" aria-hidden="true" />
+          <div class="f-field">
+            <label class="f-lbl" for="dificuldade">Qual a tua maior dificuldade neste momento?</label>
+            <textarea class="f-inp" id="dificuldade" name="dificuldade" rows="4" required></textarea>
+          </div>
 
-            <!-- Tipo de negócio -->
-            <div class="f-field">
-                <label class="f-lbl" for="tipoNegocio">Que tipo de negócio tens?</label>
-                <select class="f-inp" id="tipoNegocio" name="tipoNegocio" required>
-                <option value="" disabled selected>Seleciona uma opção</option>
-                <option value="Fisico">Físico</option>
-                <option value="Online">Online</option>
-                <option value="Ambos">Ambos</option>
-                </select>
-            </div>
+          <div class="f-field">
+            <label class="f-lbl" for="duvida">Uma dúvida que gostavas de ver respondida no webinar?</label>
+            <textarea class="f-inp" id="duvida" name="duvida" rows="4" required></textarea>
+          </div>
 
-            <!-- Maior dificuldade -->
-            <div class="f-field">
-                <label class="f-lbl" for="dificuldade">Qual a tua maior dificuldade neste momento?</label>
-                <textarea 
-                class="f-inp" 
-                id="dificuldade" 
-                name="dificuldade" 
-                rows="4"
-                placeholder="Ex: criar conteúdo consistente, converter seguidores em clientes, fotografias fracas, falta de tempo…"
-                required>
-                </textarea>
-            </div>
+          <input type="hidden" name="page" value="/questionario.html" />
+          <input type="hidden" name="ref" id="refField" />
+          <input type="hidden" name="ua" id="uaField" />
 
-            <!-- Dúvida -->
-            <div class="f-field">
-                <label class="f-lbl" for="duvida">Uma dúvida que gostavas de ver respondida no webinar?</label>
-                <textarea 
-                class="f-inp" 
-                id="duvida" 
-                name="duvida" 
-                rows="4"
-                placeholder="Escreve aqui a tua pergunta..."
-                required>
-                </textarea>
-            </div>
-
-            <button class="f-submit" id="sendBtn" type="submit">
-                <span class="bt">Enviar respostas →</span>
-                <div class="spinner" aria-hidden="true"></div>
-            </button>
-
-            <div class="note">
-                As respostas ajudam-me a preparar exemplos reais para o teu tipo de negócio.
-            </div>
+          <button class="f-submit" id="sendBtn" type="submit">
+            <span class="bt">Enviar respostas →</span>
+          </button>
         </form>
       </div>
     </div>
@@ -421,6 +402,9 @@ const obs = new IntersectionObserver((entries) => {
 }, { threshold: 0.06, rootMargin: "0px 0px -40px 0px" });
 
 document.querySelectorAll(".reveal").forEach((el) => obs.observe(el));
+
+document.getElementById("refField").value = document.referrer || "";
+document.getElementById("uaField").value = navigator.userAgent || "";
 
 const form = document.getElementById("qForm");
 const btn  = document.getElementById("sendBtn");
