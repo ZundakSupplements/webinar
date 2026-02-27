@@ -424,11 +424,12 @@
             <div class="note">
               As respostas ajudam-me a preparar exemplos reais para o teu tipo de negócio.
             </div>
-
-            <div class="helper">
-              Depois de enviares, vais ser redirecionado.
-            </div>
           </form>
+
+          <script>
+            document.getElementById("refField").value = document.referrer || "";
+            document.getElementById("uaField").value = navigator.userAgent || "";
+          </script>
         </div>
       </div>
     </div>
